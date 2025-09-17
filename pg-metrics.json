@@ -1,0 +1,1710 @@
+{
+  "meta": {
+    "version": "1.18",
+    "at": 1758094728,
+    "collected_dbs": [
+      "postgres"
+    ],
+    "local": false,
+    "user_agent": "pgmetrics/1.17.1",
+    "user": "telepix",
+    "mode": "postgres"
+  },
+  "start_time": 1756793773,
+  "system_identifier": "7542405688314273830",
+  "checkpoint_lsn": "0/2455E0C0",
+  "prior_lsn": "",
+  "redo_lsn": "0/2455E030",
+  "timeline_id": 1,
+  "next_xid": 413721,
+  "oldest_xid": 731,
+  "oldest_active_xid": 413721,
+  "checkpoint_time": 1758072691,
+  "wal_flush_lsn": "0/2455E170",
+  "wal_insert_lsn": "0/2455E170",
+  "wal_lsn": "0/2455E170",
+  "is_in_recovery": false,
+  "is_wal_replay_paused": false,
+  "last_wal_receive_lsn": "",
+  "last_wal_replay_lsn": "",
+  "last_xact_replay_timestamp": 0,
+  "last_xact_xid": 0,
+  "last_xact_time": 0,
+  "wal_archiving": {
+    "archived_count": 0,
+    "last_archived_wal": "",
+    "last_archived_time": 0,
+    "failed_count": 0,
+    "last_failed_wal": "",
+    "last_failed_time": 0,
+    "stats_reset": 1756188039
+  },
+  "wal_count": 9,
+  "wal_ready_count": 0,
+  "notification_queue_usage": 0,
+  "bg_writer": {
+    "buffers_clean": 6381,
+    "maxwritten_clean": 0,
+    "buffers_alloc": 52329,
+    "stats_reset": 1756188039
+  },
+  "backends": [
+    {
+      "db_name": "sadb",
+      "role_name": "telepix",
+      "application_name": "",
+      "pid": 168564,
+      "client_addr": "172.20.0.1/32",
+      "backend_start": 1758078751,
+      "xact_start": 0,
+      "query_start": 1758094726,
+      "state_change": 1758094726,
+      "wait_event_type": "Client",
+      "wait_event": "ClientRead",
+      "state": "idle",
+      "backend_xid": 0,
+      "backend_xmin": 0,
+      "query": "\n\t\t\tSELECT *,\n\t\t\t\t(case pg_is_in_recovery() when 't' then pg_last_wal_receive_lsn() else pg_current_wal_lsn() end) AS pg_current_wal_lsn,\n\t\t\t\t(case pg_is_in_recovery() when 't' then pg_wal_lsn_diff(pg_last_wal_receive_lsn(), pg_lsn('0/0'))::float else pg_wal_lsn_diff(pg_current_wal_lsn(), pg_lsn('0/0'))::float end) AS pg_current_wal_lsn_bytes,\n\t\t\t\t(case pg_is_in_recovery() when 't' then pg_wal_lsn_diff(pg_last_wal_receive_lsn(), replay_lsn)::float else pg_wal_lsn_diff(pg_current_wal_lsn(), repla"
+    },
+    {
+      "db_name": "postgres",
+      "role_name": "telepix",
+      "application_name": "pgmetrics",
+      "pid": 170438,
+      "client_addr": "172.20.0.1/32",
+      "backend_start": 1758094728,
+      "xact_start": 1758094728,
+      "query_start": 1758094728,
+      "state_change": 1758094728,
+      "wait_event_type": "",
+      "wait_event": "",
+      "state": "active",
+      "backend_xid": 0,
+      "backend_xmin": 413721,
+      "query": "SELECT COALESCE(datname, ''), COALESCE(usename, ''),\n\t\t\tCOALESCE(application_name, ''), COALESCE(pid, 0),\n\t\t\tCOALESCE(client_hostname::text, client_addr::text, ''),\n\t\t\tCOALESCE(EXTRACT(EPOCH FROM backend_start)::bigint, 0),\n\t\t\tCOALESCE(EXTRACT(EPOCH FROM xact_start)::bigint, 0),\n\t\t\tCOALESCE(EXTRACT(EPOCH FROM query_start)::bigint, 0),\n\t\t\tCOALESCE(EXTRACT(EPOCH FROM state_change)::bigint, 0),\n\t\t\tCOALESCE(wait_event_type, ''), COALESCE(wait_event, ''),\n\t\t\tCOALESCE(state, ''), COALESCE(backend_xid:"
+    }
+  ],
+  "roles": [
+    {
+      "oid": 10,
+      "name": "telepix",
+      "rolsuper": true,
+      "rolinherit": true,
+      "rolcreaterole": true,
+      "rolcreatedb": true,
+      "rolcanlogin": true,
+      "rolreplication": true,
+      "rolbypassrls": true,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 3373,
+      "name": "pg_monitor",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": [
+        "pg_read_all_settings",
+        "pg_read_all_stats",
+        "pg_stat_scan_tables"
+      ]
+    },
+    {
+      "oid": 3374,
+      "name": "pg_read_all_settings",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 3375,
+      "name": "pg_read_all_stats",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 3377,
+      "name": "pg_stat_scan_tables",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 4200,
+      "name": "pg_signal_backend",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 4544,
+      "name": "pg_checkpoint",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 4550,
+      "name": "pg_use_reserved_connections",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 4569,
+      "name": "pg_read_server_files",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 4570,
+      "name": "pg_write_server_files",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 4571,
+      "name": "pg_execute_server_program",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 6171,
+      "name": "pg_database_owner",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 6181,
+      "name": "pg_read_all_data",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 6182,
+      "name": "pg_write_all_data",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 6304,
+      "name": "pg_create_subscription",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    },
+    {
+      "oid": 6337,
+      "name": "pg_maintain",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolconnlimit": -1,
+      "rolvaliduntil": 0,
+      "memberof": []
+    }
+  ],
+  "databases": [
+    {
+      "oid": 5,
+      "name": "postgres",
+      "datdba": 10,
+      "dattablespace": 1663,
+      "datconnlimit": -1,
+      "age_datfrozenxid": 412990,
+      "numbackends": 1,
+      "xact_commit": 25755,
+      "xact_rollback": 5,
+      "blks_read": 494,
+      "blks_hit": 964119,
+      "tup_returned": 11379915,
+      "tup_fetched": 188176,
+      "tup_inserted": 0,
+      "tup_updated": 0,
+      "tup_deleted": 0,
+      "conflicts": 0,
+      "temp_files": 0,
+      "temp_bytes": 0,
+      "deadlocks": 0,
+      "blk_read_time": 0,
+      "blk_write_time": 0,
+      "stats_reset": 0,
+      "size": 7654547,
+      "session_time": 1622819677813.254,
+      "active_time": 118.471,
+      "sessions": 12,
+      "sessions_fatal": 2
+    },
+    {
+      "oid": 16384,
+      "name": "sadb",
+      "datdba": 10,
+      "dattablespace": 1663,
+      "datconnlimit": -1,
+      "age_datfrozenxid": 412990,
+      "numbackends": 1,
+      "xact_commit": 3206788,
+      "xact_rollback": 131,
+      "blks_read": 2039,
+      "blks_hit": 167608917,
+      "tup_returned": 297694987,
+      "tup_fetched": 95964228,
+      "tup_inserted": 1237254,
+      "tup_updated": 1789,
+      "tup_deleted": 2254,
+      "conflicts": 0,
+      "temp_files": 0,
+      "temp_bytes": 0,
+      "deadlocks": 0,
+      "blk_read_time": 0,
+      "blk_write_time": 0,
+      "stats_reset": 0,
+      "size": 8416403,
+      "session_time": 1686903040.066,
+      "active_time": 1027584.588,
+      "idle_in_transaction_time": 11756695.414,
+      "sessions": 89859,
+      "sessions_abandoned": 692
+    },
+    {
+      "oid": 25640,
+      "name": "test",
+      "datdba": 10,
+      "dattablespace": 1663,
+      "datconnlimit": -1,
+      "age_datfrozenxid": 412990,
+      "numbackends": 0,
+      "xact_commit": 17427,
+      "xact_rollback": 4,
+      "blks_read": 6,
+      "blks_hit": 682777,
+      "tup_returned": 7945359,
+      "tup_fetched": 138669,
+      "tup_inserted": 261,
+      "tup_updated": 9,
+      "tup_deleted": 0,
+      "conflicts": 0,
+      "temp_files": 0,
+      "temp_bytes": 0,
+      "deadlocks": 0,
+      "blk_read_time": 0,
+      "blk_write_time": 0,
+      "stats_reset": 0,
+      "size": 8014995,
+      "session_time": 4556383.771,
+      "active_time": 48.278,
+      "sessions": 12
+    }
+  ],
+  "tablespaces": [
+    {
+      "oid": 1663,
+      "name": "pg_default",
+      "owner": "telepix",
+      "location": "",
+      "size": 39188951,
+      "disk_used": 0,
+      "disk_total": 0,
+      "inodes_used": 0,
+      "inodes_total": 0
+    },
+    {
+      "oid": 1664,
+      "name": "pg_global",
+      "owner": "telepix",
+      "location": "",
+      "size": 578112,
+      "disk_used": 0,
+      "disk_total": 0,
+      "inodes_used": 0,
+      "inodes_total": 0
+    }
+  ],
+  "extensions": [
+    {
+      "name": "plpgsql",
+      "db_name": "postgres",
+      "default_version": "1.0",
+      "installed_version": "1.0",
+      "comment": "PL/pgSQL procedural language",
+      "schema_name": "pg_catalog"
+    }
+  ],
+  "settings": {
+    "DateStyle": {
+      "setting": "ISO, MDY"
+    },
+    "IntervalStyle": {
+      "setting": "postgres"
+    },
+    "TimeZone": {
+      "setting": "Etc/UTC",
+      "bootval": "GMT",
+      "source": "/var/lib/postgresql/data/postgresql.conf:738"
+    },
+    "allow_alter_system": {
+      "setting": "on"
+    },
+    "allow_in_place_tablespaces": {
+      "setting": "off"
+    },
+    "allow_system_table_mods": {
+      "setting": "off"
+    },
+    "application_name": {
+      "setting": "pgmetrics",
+      "source": "client"
+    },
+    "archive_cleanup_command": {
+      "setting": ""
+    },
+    "archive_command": {
+      "setting": "(disabled)",
+      "source": "default"
+    },
+    "archive_library": {
+      "setting": ""
+    },
+    "archive_mode": {
+      "setting": "off"
+    },
+    "archive_timeout": {
+      "setting": "0"
+    },
+    "array_nulls": {
+      "setting": "on"
+    },
+    "authentication_timeout": {
+      "setting": "60"
+    },
+    "autovacuum": {
+      "setting": "on"
+    },
+    "autovacuum_analyze_scale_factor": {
+      "setting": "0.1"
+    },
+    "autovacuum_analyze_threshold": {
+      "setting": "50"
+    },
+    "autovacuum_freeze_max_age": {
+      "setting": "200000000"
+    },
+    "autovacuum_max_workers": {
+      "setting": "3"
+    },
+    "autovacuum_multixact_freeze_max_age": {
+      "setting": "400000000"
+    },
+    "autovacuum_naptime": {
+      "setting": "60"
+    },
+    "autovacuum_vacuum_cost_delay": {
+      "setting": "2"
+    },
+    "autovacuum_vacuum_cost_limit": {
+      "setting": "-1"
+    },
+    "autovacuum_vacuum_insert_scale_factor": {
+      "setting": "0.2"
+    },
+    "autovacuum_vacuum_insert_threshold": {
+      "setting": "1000"
+    },
+    "autovacuum_vacuum_scale_factor": {
+      "setting": "0.2"
+    },
+    "autovacuum_vacuum_threshold": {
+      "setting": "50"
+    },
+    "autovacuum_work_mem": {
+      "setting": "-1"
+    },
+    "backend_flush_after": {
+      "setting": "0"
+    },
+    "backslash_quote": {
+      "setting": "safe_encoding"
+    },
+    "backtrace_functions": {
+      "setting": ""
+    },
+    "bgwriter_delay": {
+      "setting": "200"
+    },
+    "bgwriter_flush_after": {
+      "setting": "64"
+    },
+    "bgwriter_lru_maxpages": {
+      "setting": "100"
+    },
+    "bgwriter_lru_multiplier": {
+      "setting": "2"
+    },
+    "block_size": {
+      "setting": "8192"
+    },
+    "bonjour": {
+      "setting": "off"
+    },
+    "bonjour_name": {
+      "setting": ""
+    },
+    "bytea_output": {
+      "setting": "hex"
+    },
+    "check_function_bodies": {
+      "setting": "on"
+    },
+    "checkpoint_completion_target": {
+      "setting": "0.9"
+    },
+    "checkpoint_flush_after": {
+      "setting": "32"
+    },
+    "checkpoint_timeout": {
+      "setting": "300"
+    },
+    "checkpoint_warning": {
+      "setting": "30"
+    },
+    "client_connection_check_interval": {
+      "setting": "0"
+    },
+    "client_encoding": {
+      "setting": "UTF8",
+      "bootval": "SQL_ASCII",
+      "source": "default"
+    },
+    "client_min_messages": {
+      "setting": "notice"
+    },
+    "cluster_name": {
+      "setting": ""
+    },
+    "commit_delay": {
+      "setting": "0"
+    },
+    "commit_siblings": {
+      "setting": "5"
+    },
+    "commit_timestamp_buffers": {
+      "setting": "32",
+      "bootval": "0",
+      "source": "default"
+    },
+    "compute_query_id": {
+      "setting": "auto"
+    },
+    "config_file": {
+      "setting": "/var/lib/postgresql/data/postgresql.conf",
+      "source": "override"
+    },
+    "constraint_exclusion": {
+      "setting": "partition"
+    },
+    "cpu_index_tuple_cost": {
+      "setting": "0.005"
+    },
+    "cpu_operator_cost": {
+      "setting": "0.0025"
+    },
+    "cpu_tuple_cost": {
+      "setting": "0.01"
+    },
+    "createrole_self_grant": {
+      "setting": ""
+    },
+    "cursor_tuple_fraction": {
+      "setting": "0.1"
+    },
+    "data_checksums": {
+      "setting": "off"
+    },
+    "data_directory": {
+      "setting": "/var/lib/postgresql/data",
+      "source": "override"
+    },
+    "data_directory_mode": {
+      "setting": "0700",
+      "bootval": "448",
+      "source": "default"
+    },
+    "data_sync_retry": {
+      "setting": "off"
+    },
+    "deadlock_timeout": {
+      "setting": "1000"
+    },
+    "debug_assertions": {
+      "setting": "off"
+    },
+    "debug_discard_caches": {
+      "setting": "0"
+    },
+    "debug_io_direct": {
+      "setting": ""
+    },
+    "debug_logical_replication_streaming": {
+      "setting": "buffered"
+    },
+    "debug_parallel_query": {
+      "setting": "off"
+    },
+    "debug_pretty_print": {
+      "setting": "on"
+    },
+    "debug_print_parse": {
+      "setting": "off"
+    },
+    "debug_print_plan": {
+      "setting": "off"
+    },
+    "debug_print_rewritten": {
+      "setting": "off"
+    },
+    "default_statistics_target": {
+      "setting": "100"
+    },
+    "default_table_access_method": {
+      "setting": "heap"
+    },
+    "default_tablespace": {
+      "setting": ""
+    },
+    "default_text_search_config": {
+      "setting": "pg_catalog.english",
+      "bootval": "pg_catalog.simple",
+      "source": "/var/lib/postgresql/data/postgresql.conf:762"
+    },
+    "default_toast_compression": {
+      "setting": "pglz"
+    },
+    "default_transaction_deferrable": {
+      "setting": "off"
+    },
+    "default_transaction_isolation": {
+      "setting": "read committed"
+    },
+    "default_transaction_read_only": {
+      "setting": "off"
+    },
+    "dynamic_library_path": {
+      "setting": "$libdir"
+    },
+    "dynamic_shared_memory_type": {
+      "setting": "posix"
+    },
+    "effective_cache_size": {
+      "setting": "524288"
+    },
+    "effective_io_concurrency": {
+      "setting": "1"
+    },
+    "enable_async_append": {
+      "setting": "on"
+    },
+    "enable_bitmapscan": {
+      "setting": "on"
+    },
+    "enable_gathermerge": {
+      "setting": "on"
+    },
+    "enable_group_by_reordering": {
+      "setting": "on"
+    },
+    "enable_hashagg": {
+      "setting": "on"
+    },
+    "enable_hashjoin": {
+      "setting": "on"
+    },
+    "enable_incremental_sort": {
+      "setting": "on"
+    },
+    "enable_indexonlyscan": {
+      "setting": "on"
+    },
+    "enable_indexscan": {
+      "setting": "on"
+    },
+    "enable_material": {
+      "setting": "on"
+    },
+    "enable_memoize": {
+      "setting": "on"
+    },
+    "enable_mergejoin": {
+      "setting": "on"
+    },
+    "enable_nestloop": {
+      "setting": "on"
+    },
+    "enable_parallel_append": {
+      "setting": "on"
+    },
+    "enable_parallel_hash": {
+      "setting": "on"
+    },
+    "enable_partition_pruning": {
+      "setting": "on"
+    },
+    "enable_partitionwise_aggregate": {
+      "setting": "off"
+    },
+    "enable_partitionwise_join": {
+      "setting": "off"
+    },
+    "enable_presorted_aggregate": {
+      "setting": "on"
+    },
+    "enable_seqscan": {
+      "setting": "on"
+    },
+    "enable_sort": {
+      "setting": "on"
+    },
+    "enable_tidscan": {
+      "setting": "on"
+    },
+    "escape_string_warning": {
+      "setting": "on"
+    },
+    "event_source": {
+      "setting": "PostgreSQL"
+    },
+    "event_triggers": {
+      "setting": "on"
+    },
+    "exit_on_error": {
+      "setting": "off"
+    },
+    "extension_destdir": {
+      "setting": ""
+    },
+    "external_pid_file": {
+      "setting": ""
+    },
+    "extra_float_digits": {
+      "setting": "1"
+    },
+    "from_collapse_limit": {
+      "setting": "8"
+    },
+    "fsync": {
+      "setting": "on"
+    },
+    "full_page_writes": {
+      "setting": "on"
+    },
+    "geqo": {
+      "setting": "on"
+    },
+    "geqo_effort": {
+      "setting": "5"
+    },
+    "geqo_generations": {
+      "setting": "0"
+    },
+    "geqo_pool_size": {
+      "setting": "0"
+    },
+    "geqo_seed": {
+      "setting": "0"
+    },
+    "geqo_selection_bias": {
+      "setting": "2"
+    },
+    "geqo_threshold": {
+      "setting": "12"
+    },
+    "gin_fuzzy_search_limit": {
+      "setting": "0"
+    },
+    "gin_pending_list_limit": {
+      "setting": "4096"
+    },
+    "gss_accept_delegation": {
+      "setting": "off"
+    },
+    "hash_mem_multiplier": {
+      "setting": "2"
+    },
+    "hba_file": {
+      "setting": "/var/lib/postgresql/data/pg_hba.conf",
+      "source": "override"
+    },
+    "hot_standby": {
+      "setting": "on"
+    },
+    "hot_standby_feedback": {
+      "setting": "off"
+    },
+    "huge_page_size": {
+      "setting": "0"
+    },
+    "huge_pages": {
+      "setting": "try"
+    },
+    "huge_pages_status": {
+      "setting": "off",
+      "bootval": "unknown",
+      "source": "default"
+    },
+    "icu_validation_level": {
+      "setting": "warning"
+    },
+    "ident_file": {
+      "setting": "/var/lib/postgresql/data/pg_ident.conf",
+      "source": "override"
+    },
+    "idle_in_transaction_session_timeout": {
+      "setting": "0"
+    },
+    "idle_session_timeout": {
+      "setting": "0"
+    },
+    "ignore_checksum_failure": {
+      "setting": "off"
+    },
+    "ignore_invalid_pages": {
+      "setting": "off"
+    },
+    "ignore_system_indexes": {
+      "setting": "off"
+    },
+    "in_hot_standby": {
+      "setting": "off"
+    },
+    "integer_datetimes": {
+      "setting": "on"
+    },
+    "io_combine_limit": {
+      "setting": "16"
+    },
+    "jit": {
+      "setting": "on"
+    },
+    "jit_above_cost": {
+      "setting": "100000"
+    },
+    "jit_debugging_support": {
+      "setting": "off"
+    },
+    "jit_dump_bitcode": {
+      "setting": "off"
+    },
+    "jit_expressions": {
+      "setting": "on"
+    },
+    "jit_inline_above_cost": {
+      "setting": "500000"
+    },
+    "jit_optimize_above_cost": {
+      "setting": "500000"
+    },
+    "jit_profiling_support": {
+      "setting": "off"
+    },
+    "jit_provider": {
+      "setting": "llvmjit"
+    },
+    "jit_tuple_deforming": {
+      "setting": "on"
+    },
+    "join_collapse_limit": {
+      "setting": "8"
+    },
+    "krb_caseins_users": {
+      "setting": "off"
+    },
+    "krb_server_keyfile": {
+      "setting": "FILE:/etc/postgresql-common/krb5.keytab"
+    },
+    "lc_messages": {
+      "setting": "en_US.utf8",
+      "source": "/var/lib/postgresql/data/postgresql.conf:752"
+    },
+    "lc_monetary": {
+      "setting": "en_US.utf8",
+      "bootval": "C",
+      "source": "/var/lib/postgresql/data/postgresql.conf:754"
+    },
+    "lc_numeric": {
+      "setting": "en_US.utf8",
+      "bootval": "C",
+      "source": "/var/lib/postgresql/data/postgresql.conf:755"
+    },
+    "lc_time": {
+      "setting": "en_US.utf8",
+      "bootval": "C",
+      "source": "/var/lib/postgresql/data/postgresql.conf:756"
+    },
+    "listen_addresses": {
+      "setting": "0.0.0.0",
+      "bootval": "localhost",
+      "source": "command line"
+    },
+    "lo_compat_privileges": {
+      "setting": "off"
+    },
+    "local_preload_libraries": {
+      "setting": ""
+    },
+    "lock_timeout": {
+      "setting": "50",
+      "bootval": "0",
+      "source": "client"
+    },
+    "log_autovacuum_min_duration": {
+      "setting": "600000"
+    },
+    "log_checkpoints": {
+      "setting": "on"
+    },
+    "log_connections": {
+      "setting": "off"
+    },
+    "log_destination": {
+      "setting": "stderr"
+    },
+    "log_directory": {
+      "setting": "log"
+    },
+    "log_disconnections": {
+      "setting": "off"
+    },
+    "log_duration": {
+      "setting": "off"
+    },
+    "log_error_verbosity": {
+      "setting": "default"
+    },
+    "log_executor_stats": {
+      "setting": "off"
+    },
+    "log_file_mode": {
+      "setting": "0600",
+      "bootval": "384",
+      "source": "default"
+    },
+    "log_filename": {
+      "setting": "postgresql-%Y-%m-%d_%H%M%S.log"
+    },
+    "log_hostname": {
+      "setting": "off"
+    },
+    "log_line_prefix": {
+      "setting": "%m [%p] "
+    },
+    "log_lock_waits": {
+      "setting": "off"
+    },
+    "log_min_duration_sample": {
+      "setting": "-1"
+    },
+    "log_min_duration_statement": {
+      "setting": "-1"
+    },
+    "log_min_error_statement": {
+      "setting": "error"
+    },
+    "log_min_messages": {
+      "setting": "warning"
+    },
+    "log_parameter_max_length": {
+      "setting": "-1"
+    },
+    "log_parameter_max_length_on_error": {
+      "setting": "0"
+    },
+    "log_parser_stats": {
+      "setting": "off"
+    },
+    "log_planner_stats": {
+      "setting": "off"
+    },
+    "log_recovery_conflict_waits": {
+      "setting": "off"
+    },
+    "log_replication_commands": {
+      "setting": "off"
+    },
+    "log_rotation_age": {
+      "setting": "1440"
+    },
+    "log_rotation_size": {
+      "setting": "10240"
+    },
+    "log_startup_progress_interval": {
+      "setting": "10000"
+    },
+    "log_statement": {
+      "setting": "none"
+    },
+    "log_statement_sample_rate": {
+      "setting": "1"
+    },
+    "log_statement_stats": {
+      "setting": "off"
+    },
+    "log_temp_files": {
+      "setting": "-1"
+    },
+    "log_timezone": {
+      "setting": "Etc/UTC",
+      "bootval": "GMT",
+      "source": "/var/lib/postgresql/data/postgresql.conf:622"
+    },
+    "log_transaction_sample_rate": {
+      "setting": "0"
+    },
+    "log_truncate_on_rotation": {
+      "setting": "off"
+    },
+    "logging_collector": {
+      "setting": "off"
+    },
+    "logical_decoding_work_mem": {
+      "setting": "65536"
+    },
+    "maintenance_io_concurrency": {
+      "setting": "10"
+    },
+    "maintenance_work_mem": {
+      "setting": "65536"
+    },
+    "max_connections": {
+      "setting": "100"
+    },
+    "max_files_per_process": {
+      "setting": "1000"
+    },
+    "max_function_args": {
+      "setting": "100"
+    },
+    "max_identifier_length": {
+      "setting": "63"
+    },
+    "max_index_keys": {
+      "setting": "32"
+    },
+    "max_locks_per_transaction": {
+      "setting": "64"
+    },
+    "max_logical_replication_workers": {
+      "setting": "4"
+    },
+    "max_notify_queue_pages": {
+      "setting": "1048576"
+    },
+    "max_parallel_apply_workers_per_subscription": {
+      "setting": "2"
+    },
+    "max_parallel_maintenance_workers": {
+      "setting": "2"
+    },
+    "max_parallel_workers": {
+      "setting": "8"
+    },
+    "max_parallel_workers_per_gather": {
+      "setting": "2"
+    },
+    "max_pred_locks_per_page": {
+      "setting": "2"
+    },
+    "max_pred_locks_per_relation": {
+      "setting": "-2"
+    },
+    "max_pred_locks_per_transaction": {
+      "setting": "64"
+    },
+    "max_prepared_transactions": {
+      "setting": "0"
+    },
+    "max_replication_slots": {
+      "setting": "10"
+    },
+    "max_slot_wal_keep_size": {
+      "setting": "-1"
+    },
+    "max_stack_depth": {
+      "setting": "2048",
+      "bootval": "100",
+      "source": "default"
+    },
+    "max_standby_archive_delay": {
+      "setting": "30000"
+    },
+    "max_standby_streaming_delay": {
+      "setting": "30000"
+    },
+    "max_sync_workers_per_subscription": {
+      "setting": "2"
+    },
+    "max_wal_senders": {
+      "setting": "10"
+    },
+    "max_wal_size": {
+      "setting": "2048",
+      "bootval": "1024",
+      "source": "/var/lib/postgresql/data/postgresql.auto.conf:3"
+    },
+    "max_worker_processes": {
+      "setting": "8"
+    },
+    "min_dynamic_shared_memory": {
+      "setting": "0"
+    },
+    "min_parallel_index_scan_size": {
+      "setting": "64"
+    },
+    "min_parallel_table_scan_size": {
+      "setting": "1024"
+    },
+    "min_wal_size": {
+      "setting": "80"
+    },
+    "multixact_member_buffers": {
+      "setting": "32"
+    },
+    "multixact_offset_buffers": {
+      "setting": "16"
+    },
+    "notify_buffers": {
+      "setting": "16"
+    },
+    "parallel_leader_participation": {
+      "setting": "on"
+    },
+    "parallel_setup_cost": {
+      "setting": "1000"
+    },
+    "parallel_tuple_cost": {
+      "setting": "0.1"
+    },
+    "password_encryption": {
+      "setting": "scram-sha-256"
+    },
+    "plan_cache_mode": {
+      "setting": "auto"
+    },
+    "port": {
+      "setting": "5432"
+    },
+    "post_auth_delay": {
+      "setting": "0"
+    },
+    "pre_auth_delay": {
+      "setting": "0"
+    },
+    "primary_conninfo": {
+      "setting": ""
+    },
+    "primary_slot_name": {
+      "setting": ""
+    },
+    "quote_all_identifiers": {
+      "setting": "off"
+    },
+    "random_page_cost": {
+      "setting": "4"
+    },
+    "recovery_end_command": {
+      "setting": ""
+    },
+    "recovery_init_sync_method": {
+      "setting": "fsync"
+    },
+    "recovery_min_apply_delay": {
+      "setting": "0"
+    },
+    "recovery_prefetch": {
+      "setting": "try"
+    },
+    "recovery_target": {
+      "setting": ""
+    },
+    "recovery_target_action": {
+      "setting": "pause"
+    },
+    "recovery_target_inclusive": {
+      "setting": "on"
+    },
+    "recovery_target_lsn": {
+      "setting": ""
+    },
+    "recovery_target_name": {
+      "setting": ""
+    },
+    "recovery_target_time": {
+      "setting": ""
+    },
+    "recovery_target_timeline": {
+      "setting": "latest"
+    },
+    "recovery_target_xid": {
+      "setting": ""
+    },
+    "recursive_worktable_factor": {
+      "setting": "10"
+    },
+    "remove_temp_files_after_crash": {
+      "setting": "on"
+    },
+    "reserved_connections": {
+      "setting": "0"
+    },
+    "restart_after_crash": {
+      "setting": "on"
+    },
+    "restore_command": {
+      "setting": ""
+    },
+    "restrict_nonsystem_relation_kind": {
+      "setting": ""
+    },
+    "row_security": {
+      "setting": "on"
+    },
+    "scram_iterations": {
+      "setting": "4096"
+    },
+    "search_path": {
+      "setting": "\"$user\", public"
+    },
+    "segment_size": {
+      "setting": "131072"
+    },
+    "send_abort_for_crash": {
+      "setting": "off"
+    },
+    "send_abort_for_kill": {
+      "setting": "off"
+    },
+    "seq_page_cost": {
+      "setting": "1"
+    },
+    "serializable_buffers": {
+      "setting": "32"
+    },
+    "server_encoding": {
+      "setting": "UTF8",
+      "bootval": "SQL_ASCII",
+      "source": "default"
+    },
+    "server_version": {
+      "setting": "17.5 (Debian 17.5-1.pgdg120+1)"
+    },
+    "server_version_num": {
+      "setting": "170005"
+    },
+    "session_preload_libraries": {
+      "setting": ""
+    },
+    "session_replication_role": {
+      "setting": "origin"
+    },
+    "shared_buffers": {
+      "setting": "16384"
+    },
+    "shared_memory_size": {
+      "setting": "143",
+      "bootval": "0",
+      "source": "default"
+    },
+    "shared_memory_size_in_huge_pages": {
+      "setting": "72",
+      "bootval": "-1",
+      "source": "default"
+    },
+    "shared_memory_type": {
+      "setting": "mmap"
+    },
+    "shared_preload_libraries": {
+      "setting": ""
+    },
+    "ssl": {
+      "setting": "off"
+    },
+    "ssl_ca_file": {
+      "setting": ""
+    },
+    "ssl_cert_file": {
+      "setting": "server.crt"
+    },
+    "ssl_ciphers": {
+      "setting": "HIGH:MEDIUM:+3DES:!aNULL"
+    },
+    "ssl_crl_dir": {
+      "setting": ""
+    },
+    "ssl_crl_file": {
+      "setting": ""
+    },
+    "ssl_dh_params_file": {
+      "setting": ""
+    },
+    "ssl_ecdh_curve": {
+      "setting": "prime256v1"
+    },
+    "ssl_key_file": {
+      "setting": "server.key"
+    },
+    "ssl_library": {
+      "setting": "OpenSSL"
+    },
+    "ssl_max_protocol_version": {
+      "setting": ""
+    },
+    "ssl_min_protocol_version": {
+      "setting": "TLSv1.2"
+    },
+    "ssl_passphrase_command": {
+      "setting": ""
+    },
+    "ssl_passphrase_command_supports_reload": {
+      "setting": "off"
+    },
+    "ssl_prefer_server_ciphers": {
+      "setting": "on"
+    },
+    "standard_conforming_strings": {
+      "setting": "on"
+    },
+    "statement_timeout": {
+      "setting": "5000",
+      "bootval": "0",
+      "source": "client"
+    },
+    "stats_fetch_consistency": {
+      "setting": "cache"
+    },
+    "subtransaction_buffers": {
+      "setting": "32",
+      "bootval": "0",
+      "source": "default"
+    },
+    "summarize_wal": {
+      "setting": "off"
+    },
+    "superuser_reserved_connections": {
+      "setting": "3"
+    },
+    "sync_replication_slots": {
+      "setting": "off"
+    },
+    "synchronize_seqscans": {
+      "setting": "on"
+    },
+    "synchronized_standby_slots": {
+      "setting": ""
+    },
+    "synchronous_commit": {
+      "setting": "on"
+    },
+    "synchronous_standby_names": {
+      "setting": ""
+    },
+    "syslog_facility": {
+      "setting": "local0"
+    },
+    "syslog_ident": {
+      "setting": "postgres"
+    },
+    "syslog_sequence_numbers": {
+      "setting": "on"
+    },
+    "syslog_split_messages": {
+      "setting": "on"
+    },
+    "tcp_keepalives_count": {
+      "setting": "9",
+      "bootval": "0",
+      "source": "default"
+    },
+    "tcp_keepalives_idle": {
+      "setting": "7200",
+      "bootval": "0",
+      "source": "default"
+    },
+    "tcp_keepalives_interval": {
+      "setting": "75",
+      "bootval": "0",
+      "source": "default"
+    },
+    "tcp_user_timeout": {
+      "setting": "0"
+    },
+    "temp_buffers": {
+      "setting": "1024"
+    },
+    "temp_file_limit": {
+      "setting": "-1"
+    },
+    "temp_tablespaces": {
+      "setting": ""
+    },
+    "timezone_abbreviations": {
+      "setting": "Default",
+      "source": "default"
+    },
+    "trace_connection_negotiation": {
+      "setting": "off"
+    },
+    "trace_notify": {
+      "setting": "off"
+    },
+    "trace_sort": {
+      "setting": "off"
+    },
+    "track_activities": {
+      "setting": "on"
+    },
+    "track_activity_query_size": {
+      "setting": "1024"
+    },
+    "track_commit_timestamp": {
+      "setting": "off"
+    },
+    "track_counts": {
+      "setting": "on"
+    },
+    "track_functions": {
+      "setting": "none"
+    },
+    "track_io_timing": {
+      "setting": "off"
+    },
+    "track_wal_io_timing": {
+      "setting": "off"
+    },
+    "transaction_buffers": {
+      "setting": "32",
+      "bootval": "0",
+      "source": "default"
+    },
+    "transaction_deferrable": {
+      "setting": "off"
+    },
+    "transaction_isolation": {
+      "setting": "read committed"
+    },
+    "transaction_read_only": {
+      "setting": "off"
+    },
+    "transaction_timeout": {
+      "setting": "0"
+    },
+    "transform_null_equals": {
+      "setting": "off"
+    },
+    "unix_socket_directories": {
+      "setting": "/var/run/postgresql"
+    },
+    "unix_socket_group": {
+      "setting": ""
+    },
+    "unix_socket_permissions": {
+      "setting": "0777",
+      "bootval": "511",
+      "source": "default"
+    },
+    "update_process_title": {
+      "setting": "on"
+    },
+    "vacuum_buffer_usage_limit": {
+      "setting": "2048"
+    },
+    "vacuum_cost_delay": {
+      "setting": "0"
+    },
+    "vacuum_cost_limit": {
+      "setting": "200"
+    },
+    "vacuum_cost_page_dirty": {
+      "setting": "20"
+    },
+    "vacuum_cost_page_hit": {
+      "setting": "1"
+    },
+    "vacuum_cost_page_miss": {
+      "setting": "2"
+    },
+    "vacuum_failsafe_age": {
+      "setting": "1600000000"
+    },
+    "vacuum_freeze_min_age": {
+      "setting": "50000000"
+    },
+    "vacuum_freeze_table_age": {
+      "setting": "150000000"
+    },
+    "vacuum_multixact_failsafe_age": {
+      "setting": "1600000000"
+    },
+    "vacuum_multixact_freeze_min_age": {
+      "setting": "5000000"
+    },
+    "vacuum_multixact_freeze_table_age": {
+      "setting": "150000000"
+    },
+    "wal_block_size": {
+      "setting": "8192"
+    },
+    "wal_buffers": {
+      "setting": "512",
+      "bootval": "-1",
+      "source": "default"
+    },
+    "wal_compression": {
+      "setting": "off"
+    },
+    "wal_consistency_checking": {
+      "setting": ""
+    },
+    "wal_decode_buffer_size": {
+      "setting": "524288"
+    },
+    "wal_init_zero": {
+      "setting": "on"
+    },
+    "wal_keep_size": {
+      "setting": "0"
+    },
+    "wal_level": {
+      "setting": "replica"
+    },
+    "wal_log_hints": {
+      "setting": "off"
+    },
+    "wal_receiver_create_temp_slot": {
+      "setting": "off"
+    },
+    "wal_receiver_status_interval": {
+      "setting": "10"
+    },
+    "wal_receiver_timeout": {
+      "setting": "60000"
+    },
+    "wal_recycle": {
+      "setting": "on"
+    },
+    "wal_retrieve_retry_interval": {
+      "setting": "5000"
+    },
+    "wal_segment_size": {
+      "setting": "16777216"
+    },
+    "wal_sender_timeout": {
+      "setting": "60000"
+    },
+    "wal_skip_threshold": {
+      "setting": "2048"
+    },
+    "wal_summary_keep_time": {
+      "setting": "14400"
+    },
+    "wal_sync_method": {
+      "setting": "fdatasync"
+    },
+    "wal_writer_delay": {
+      "setting": "200"
+    },
+    "wal_writer_flush_after": {
+      "setting": "128"
+    },
+    "work_mem": {
+      "setting": "4096"
+    },
+    "xmlbinary": {
+      "setting": "base64"
+    },
+    "xmloption": {
+      "setting": "content"
+    },
+    "zero_damaged_pages": {
+      "setting": "off"
+    }
+  },
+  "locks": [
+    {
+      "locktype": "relation",
+      "db_name": "postgres",
+      "pid": 170438,
+      "mode": "AccessShareLock",
+      "granted": true,
+      "relation_oid": 12073
+    },
+    {
+      "locktype": "virtualxid",
+      "pid": 170438,
+      "mode": "ExclusiveLock",
+      "granted": true
+    },
+    {
+      "locktype": "relation",
+      "pid": 170438,
+      "mode": "AccessShareLock",
+      "granted": true,
+      "relation_oid": 2671
+    },
+    {
+      "locktype": "relation",
+      "pid": 170438,
+      "mode": "AccessShareLock",
+      "granted": true,
+      "relation_oid": 1262
+    },
+    {
+      "locktype": "relation",
+      "pid": 170438,
+      "mode": "AccessShareLock",
+      "granted": true,
+      "relation_oid": 2672
+    }
+  ],
+  "highwal": 44,
+  "betypecounts": {
+    "autovacuum launcher": 1,
+    "background writer": 1,
+    "checkpointer": 1,
+    "client backend": 2,
+    "logical replication launcher": 1,
+    "walwriter": 1
+  },
+  "wal": {
+    "records": 4213523,
+    "fpi": 3628,
+    "bytes": 570658035,
+    "buffers_full": 20,
+    "write": 376185,
+    "sync": 376062,
+    "write_time": 0,
+    "sync_time": 0,
+    "stats_reset": 1756188039
+  },
+  "checkpointer": {
+    "num_timed": 5224,
+    "num_requested": 3,
+    "restartpoints_timed": 0,
+    "restartpoints_req": 0,
+    "restartpoints_done": 0,
+    "write_time": 4357080,
+    "sync_time": 848,
+    "buffers_written": 49039,
+    "stats_reset": 1756188039
+  },
+  "connection_tuple": "172.20.0.1 46378 172.20.0.4 5432",
+  "full_version": "PostgreSQL 17.5 (Debian 17.5-1.pgdg120+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit",
+  "conf_load_time": 1758071724
+}
