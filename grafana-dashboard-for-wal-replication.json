@@ -1,0 +1,272 @@
+{
+  "title": "PostgreSQL — WAL & Replication Deep Dive",
+  "uid": "pg-wal-repl-deep",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["postgresql", "wal", "replication", "pgvector"],
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "ds",
+        "label": "Prometheus",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": { "selected": true, "text": "Prometheus", "value": "PROMETHEUS_DS_UID" }
+      },
+      {
+        "name": "job",
+        "label": "job",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "${ds}" },
+        "query": "label_values(up{job=~\".*\"}, job)",
+        "refresh": 1,
+        "includeAll": true,
+        "multi": true
+      },
+      {
+        "name": "instance",
+        "label": "instance",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "${ds}" },
+        "query": "label_values(up{job=~\"$job\"}, instance)",
+        "refresh": 1,
+        "includeAll": true,
+        "multi": true
+      }
+    ]
+  },
+  "annotations": {
+    "list": [
+      {
+        "name": "Panel Annotations",
+        "type": "dashboard",
+        "enable": true
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "row",
+      "title": "WAL Generation",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
+    },
+    {
+      "type": "timeseries",
+      "title": "WAL Bytes/s (write pressure)",
+      "description": "pg_stat_wal.wal_bytes를 기반으로 WAL 생성 속도. 인덱스 빌드/벡터 생성 중 스파이크 확인.",
+      "transparent": true,
+      "fieldConfig": { "defaults": { "unit": "bytes/sec" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "sum by (instance) (rate(pg_stat_wal_wal_bytes_total{job=~\"$job\",instance=~\"$instance\"}[5m]))"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 1 }
+    },
+    {
+      "type": "timeseries",
+      "title": "WAL Records/s & Full-Page Images/s",
+      "description": "페이지 스플릿/대량쓰기 시 FPI 증가 감지.",
+      "transparent": true,
+      "fieldConfig": { "defaults": { "unit": "ops" } },
+      "targets": [
+        {
+          "refId": "R",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "sum by (instance) (rate(pg_stat_wal_wal_records_total{job=~\"$job\",instance=~\"$instance\"}[5m]))"
+        },
+        {
+          "refId": "F",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "sum by (instance) (rate(pg_stat_wal_wal_fpi_total{job=~\"$job\",instance=~\"$instance\"}[5m]))"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 1 }
+    },
+    {
+      "type": "timeseries",
+      "title": "WAL Buffers Full/s",
+      "description": "wal_buffers가 모자라 디스크 플러시를 강제한 빈도. 증가 시 wal_buffers·checkpoint 튜닝 고려.",
+      "transparent": true,
+      "fieldConfig": { "defaults": { "unit": "ops" } },
+      "targets": [
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "sum by (instance) (rate(pg_stat_wal_wal_buffers_full_total{job=~\"$job\",instance=~\"$instance\"}[5m]))"
+        }
+      ],
+      "gridPos": { "h": 7, "w": 8, "x": 0, "y": 9 }
+    },
+    {
+      "type": "stat",
+      "title": "WAL Rate (Last 5m avg, MB/s)",
+      "options": { "reduceOptions": { "calcs": ["mean"] } },
+      "fieldConfig": { "defaults": { "unit": "decbytes" } },
+      "targets": [
+        {
+          "refId": "S",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "sum by (instance) (rate(pg_stat_wal_wal_bytes_total{job=~\"$job\",instance=~\"$instance\"}[5m])) / 1048576"
+        }
+      ],
+      "gridPos": { "h": 7, "w": 8, "x": 8, "y": 9 }
+    },
+    {
+      "type": "stat",
+      "title": "FPI Ratio (FPI / Records, 5m)",
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "horizontal" },
+      "targets": [
+        {
+          "refId": "Q",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "clamp_min( sum by (instance) (rate(pg_stat_wal_wal_fpi_total{job=~\"$job\",instance=~\"$instance\"}[5m])) / sum by (instance) (rate(pg_stat_wal_wal_records_total{job=~\"$job\",instance=~\"$instance\"}[5m])) , 0)"
+        }
+      ],
+      "gridPos": { "h": 7, "w": 8, "x": 16, "y": 9 }
+    },
+
+    { "type": "row", "title": "Replication Health", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 16 } },
+
+    {
+      "type": "timeseries",
+      "title": "Physical Replication Lag (bytes)",
+      "description": "standby별 바이트 단위 지연. 인덱스 빌드/벡터 생성 중 캐치업 여부 확인.",
+      "transparent": true,
+      "fieldConfig": { "defaults": { "unit": "bytes" } },
+      "targets": [
+        {
+          "refId": "L1",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "max by (instance, client_addr) (pg_replication_lag_bytes{job=~\"$job\",instance=~\"$instance\"})"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 17 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Apply Lag (seconds)",
+      "description": "replay 기준 시간 지연. 장시간 증가 시 standby I/O/CPU 병목 의심.",
+      "transparent": true,
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "targets": [
+        {
+          "refId": "L2",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "max by (instance, client_addr) (pg_replication_lag{job=~\"$job\",instance=~\"$instance\"})"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 17 }
+    },
+    {
+      "type": "state-timeline",
+      "title": "WAL Receiver Status (standby)",
+      "description": "streaming / stopped 상태 변화 타임라인.",
+      "targets": [
+        {
+          "refId": "WRS",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "max by (instance, status) (pg_stat_wal_receiver_status{job=~\"$job\",instance=~\"$instance\"})"
+        }
+      ],
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 25 }
+    },
+
+    { "type": "row", "title": "LSN Gaps (Primary ↔ Standby)", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 31 } },
+
+    {
+      "type": "timeseries",
+      "title": "Write vs Replay LSN Gap (bytes)",
+      "description": "primary write_lsn와 standby replay_lsn 차이. collector.xlog_location 필요.",
+      "fieldConfig": { "defaults": { "unit": "bytes" } },
+      "targets": [
+        {
+          "refId": "GAP",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "max by (instance) (pg_xlog_location_bytes{lsn=\"write\",job=~\"$job\",instance=~\"$instance\"}) - on(instance) max by (instance) (pg_xlog_location_bytes{lsn=\"replay\",job=~\"$job\",instance=~\"$instance\"})"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 32 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Sent vs Flush LSN Gap (bytes)",
+      "description": "전송은 됐지만 standby flush가 늦을 때 증가(네트워크/스토리지 병목 분리).",
+      "fieldConfig": { "defaults": { "unit": "bytes" } },
+      "targets": [
+        {
+          "refId": "GAP2",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "max by (instance) (pg_xlog_location_bytes{lsn=\"sent\",job=~\"$job\",instance=~\"$instance\"}) - on(instance) max by (instance) (pg_xlog_location_bytes{lsn=\"flush\",job=~\"$job\",instance=~\"$instance\"})"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 32 }
+    },
+
+    { "type": "row", "title": "Alert-style Stats (Index Build / pgvector Ingest 시)", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 40 } },
+
+    {
+      "type": "stat",
+      "title": "Replication Healthy?",
+      "description": "Lag 임계치(예: 256MB, 30s) 초과 감지용. 색상 임계선만 제공(알림은 룰로 설정).",
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 268435456 } ] }
+        }
+      },
+      "targets": [
+        {
+          "refId": "HLTH",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "max by (instance) (pg_replication_lag_bytes{job=~\"$job\",instance=~\"$instance\"})"
+        }
+      ],
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 41 }
+    },
+    {
+      "type": "stat",
+      "title": "WAL Rate > 64MB/s ?",
+      "options": { "reduceOptions": { "calcs": ["mean"] } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes/sec",
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 67108864 } ] }
+        }
+      },
+      "targets": [
+        {
+          "refId": "WRATE",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "sum by (instance) (rate(pg_stat_wal_wal_bytes_total{job=~\"$job\",instance=~\"$instance\"}[5m]))"
+        }
+      ],
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 41 }
+    },
+    {
+      "type": "stat",
+      "title": "Buffers Full Rate > 50/s ?",
+      "options": { "reduceOptions": { "calcs": ["mean"] } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 50 } ] }
+        }
+      },
+      "targets": [
+        {
+          "refId": "BFULL",
+          "datasource": { "type": "prometheus", "uid": "${ds}" },
+          "expr": "sum by (instance) (rate(pg_stat_wal_wal_buffers_full_total{job=~\"$job\",instance=~\"$instance\"}[5m]))"
+        }
+      ],
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 41 }
+    }
+  ]
+}
